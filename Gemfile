@@ -31,3 +31,5 @@ gem 'turbolinks'
 gem 'tzinfo-data'
 gem 'bootstrap-sass'
 gem 'shoulda'
+# Used for encrypting User passwords
+gem 'bcrypt'
