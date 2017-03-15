@@ -6,7 +6,7 @@ class Post < ActiveRecord::Base
   has_many :labelings, as: :labelable
   has_many :labels, through: :labelings
   has_many :favorites, dependent: :destroy
-  after_create :create_vote
+  after_create :create_favorite
 
   default_scope { order('rank DESC') }
 
@@ -33,12 +33,8 @@ class Post < ActiveRecord::Base
     update_attribute(:rank, new_rank)
   end
 
-  private
-
-  def create_vote
-    user.votes.create(value: 1, post: self)
+  def create_favorite
+    Favorite.create(post: self, user: self.user)
+    FavoriteMailer.new_post(self).deliver_now
   end
-  def favorite_for(post)
-  favorites.where(post_id: post.id).first
-end
 end
