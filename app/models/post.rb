@@ -5,6 +5,7 @@ class Post < ActiveRecord::Base
   has_many :votes, dependent: :destroy
   has_many :labelings, as: :labelable
   has_many :labels, through: :labelings
+  has_many :favorites, dependent: :destroy
   after_create :create_vote
 
   default_scope { order('rank DESC') }
@@ -37,4 +38,7 @@ class Post < ActiveRecord::Base
   def create_vote
     user.votes.create(value: 1, post: self)
   end
+  def favorite_for(post)
+  favorites.where(post_id: post.id).first
+end
 end
